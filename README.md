@@ -17,6 +17,7 @@ The below steps are also in a how-to video: https://www.youtube.com/watch?v=AYms
 * /opt/zimbra/j2sdk-20140721/bin/keytool -import -alias cacertclass1ca -keystore /opt/zimbra/java/jre/lib/security/cacerts -import -trustcacerts -file your-exported-cert.cer 
 * default password: changeit
 * keytool binary may be on a different location if you are not running 8.6
+* zmcontrol restart (after adding the certificate)
 
 ## Configure authentication settings for your domain
 
