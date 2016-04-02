@@ -25,18 +25,22 @@ The below steps are also in a how-to video: https://www.youtube.com/watch?v=AYms
 - Select External LDAP as authentication mechanism
 - Type the LDAP URL and check Use SSL on port 636 (your certificate must be trusted, see below)
 - Type `(samaccountname=%u)` in the LDAP filter field
-- Specify `cn=users,dc=SERVER,dc=EXT` in the LDAP search base field
+- Specify `CN=Users, DC=DOMAIN, DC=EXT` in the LDAP search base field
 - Check "Use DN/Password to bind to external server"
-- Enter the Bind DN `cn=Administrator,cn=users,dc=SERVER,dc=EXT` and its password
+- Enter the Bind DN `CN=Administrator,CN=Users, DC=DOMAIN,DC=EXT` and its password
 - If Test passed succesfully, click Finish
 - Assign the new External change password listener: `ADPassword`
 - From the cli run as Zimbra user:
 
-         zmprov md yourdomain.com zimbraAuthLdapSearchBase "cn=users,dc=SERVER,dc=EXT"
-         zmprov md yourdomain.com zimbraAuthLdapSearchFilter "(samaccountname=%u)"
-         zmprov md yourdomain.com zimbraExternalGroupLdapSearchBase "cn=users,dc=SERVER,dc=EXT"
-         zmprov md yourdomain.com zimbraExternalGroupLdapSearchFilter "(samaccountname=%u)"
-         zmprov md yourdomain.com zimbraPasswordChangeListener ADPassword
+         zmprov md domain.ext zimbraAuthLdapSearchBindDn "CN=Administrator,CN=Users, DC=DOMAIN,DC=EXT"
+         zmprov md domain.ext zimbraAuthLdapSearchBindPassword "admin-password-here"
+         zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
+         zmprov md domain.ext zimbraAuthLdapURL "ldaps://ad-server-ip-or-dnsname:636" 
+         zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users, DC=DOMAIN, DC=EXT"
+         zmprov md domain.ext zimbraAuthLdapSearchFilter "(samaccountname=%u)"
+         zmprov md domain.ext zimbraExternalGroupLdapSearchBase "CN=Users, DC=DOMAIN, DC=EXT"
+         zmprov md domain.ext zimbraExternalGroupLdapSearchFilter "(samaccountname=%u)"
+         zmprov md domain.ext zimbraPasswordChangeListener ADPassword
          zmcontrol restart
 
 
