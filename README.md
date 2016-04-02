@@ -46,6 +46,23 @@ The below steps are also in a how-to video: https://www.youtube.com/watch?v=AYms
 
 * This Zimlet may require you to open port 8443
 
+## Debugging
+Do a password change while you run the following command:
+
+     tail -f /opt/zimbra/log/mailbox.log
+
+Verify your configuration:     
+
+     zmprov gd domain.ext | grep -i ldap | grep -v Gal
+
+Example issues:
+
+     Wrong bind DN:
+     LDAP: error code 34 - 0000208F: NameErr: DSID-03100225, problem 2006 (BAD_NAME)
+     
+     Forgot to set zimbraAuthLdapSearchFilter or other required attribute:
+     A network service error has occurred
+     system failure: java.lang.NullPointerException
 
 ## License
 * originally Copyright 2012 Antonio Messina (a.messina@iknowconsulting.it)
