@@ -10,8 +10,8 @@ The below steps are also in a how-to video: https://www.youtube.com/watch?v=AYms
 
 ## Installation
 
-- As root, create the /opt/zimbra/lib/ext/adpassword directory
-- As root, copy adPassword.jar into /opt/zimbra/lib/ext/adpassword/
+- As root, `mkdir -p /opt/zimbra/lib/ext/adpassword`
+- As root, `wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.1/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar`
 
 ## Add the certificate from your Active Directory to the Zimbra server trust
 * /opt/zimbra/j2sdk-20140721/bin/keytool -import -alias cacertclass1ca -keystore /opt/zimbra/java/jre/lib/security/cacerts -import -trustcacerts -file your-exported-cert.cer 
