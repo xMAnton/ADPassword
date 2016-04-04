@@ -17,7 +17,7 @@ If you use the same SSL certificate on your AD as on Zimbra there is a good chan
 
 ## Installation via the cli
 
-Review your LDAP configuration in the commands below and then copy-paste them as root:
+Review your LDAP configuration in the commands below and then copy-paste them:
 
       mkdir -p /opt/zimbra/lib/ext/adpassword
       wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.1/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar 
