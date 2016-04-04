@@ -21,8 +21,6 @@ Review your LDAP configuration in the commands below and then copy-paste them:
 
       mkdir -p /opt/zimbra/lib/ext/adpassword
       wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.1/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar 
-      mv /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass-old
-      wget https://raw.githubusercontent.com/Zimbra-Community/ADPassword/master/patches/changepass -O /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass
       su zimbra
       zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
       zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
@@ -39,7 +37,8 @@ Review your LDAP configuration in the commands below and then copy-paste them:
       zmprov gd domain.ext | grep -i zimbraPasswordChangeListener
       zmprov md domain.ext zimbraAuthFallbackToLocal FALSE
       zmcontrol restart
-      
+
+* If you want a custom password complexity rules, see: https://github.com/Zimbra-Community/ADPassword/wiki/Adding-a-password-policy-check
 * This extension may require you to open port 8443
 
 ## Debugging
