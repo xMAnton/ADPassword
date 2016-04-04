@@ -6,10 +6,10 @@ A Zimbra server extension to change Active Directory passwords from the Zimbra w
 
 The original project by Antonio Messina (a.messina@iknowconsulting.it) https://github.com/xMAnton/ADPassword currently tested on Zimbra 8.6 and Windows 2012 R2 Active Directory.
 
-The below steps are also in a how-to video: https://www.youtube.com/watch?v=AYmsdw3tHoU
+If you do not want the cli install, you can also try the GUI, but I recommed to use the CLI: https://www.youtube.com/watch?v=AYmsdw3tHoU
 
 ## Add the certificate from your Active Directory to the Zimbra server trust
-If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well.
+If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well. If you are not sure, configure your domain to auth againts AD first before installing this extension. 
 
 * /opt/zimbra/j2sdk-20140721/bin/keytool -import -alias cacertclass1ca -keystore /opt/zimbra/java/jre/lib/security/cacerts -import -trustcacerts -file your-exported-cert.cer 
 * default password: changeit
