@@ -23,21 +23,22 @@ Review your LDAP configuration in the commands below and then copy-paste them as
       wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.1/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar 
       mv /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass-old
       wget https://raw.githubusercontent.com/Zimbra-Community/ADPassword/master/patches/changepass -O /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapSearchBindDn "CN=serviceAccount,CN=Users,DC=DOMAIN,DC=EXT"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapSearchBindPassword "your-password-here"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapSearchFilter "(samaccountname=%u)"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapURL "ldaps://ad-server-ip-or-dns:636"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraExternalGroupLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraExternalGroupLdapSearchFilter "(samaccountname=%u)"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthMech "ad"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthMechAdmin "ad"
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraPasswordChangeListener ADPassword
-      sudo -u zimbra /opt/zimbra/bin/zmprov gd domain.ext | grep -i ldap | grep -v Gal
-      sudo -u zimbra /opt/zimbra/bin/zmprov gd domain.ext | grep -i zimbraPasswordChangeListener
-      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthFallbackToLocal FALSE
-      sudo -u zimbra /opt/zimbra/bin/zmcontrol restart
+      su zimbra
+      zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
+      zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
+      zmprov md domain.ext zimbraAuthLdapSearchBindDn "CN=serviceAccount,CN=Users,DC=DOMAIN,DC=EXT"
+      zmprov md domain.ext zimbraAuthLdapSearchBindPassword "your-password-here"
+      zmprov md domain.ext zimbraAuthLdapSearchFilter "(samaccountname=%u)"
+      zmprov md domain.ext zimbraAuthLdapURL "ldaps://ad-server-ip-or-dns:636"
+      zmprov md domain.ext zimbraExternalGroupLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
+      zmprov md domain.ext zimbraExternalGroupLdapSearchFilter "(samaccountname=%u)"
+      zmprov md domain.ext zimbraAuthMech "ad"
+      zmprov md domain.ext zimbraAuthMechAdmin "ad"
+      zmprov md domain.ext zimbraPasswordChangeListener ADPassword
+      zmprov gd domain.ext | grep -i ldap | grep -v Gal
+      zmprov gd domain.ext | grep -i zimbraPasswordChangeListener
+      zmprov md domain.ext zimbraAuthFallbackToLocal FALSE
+      zmcontrol restart
       
 * This extension may require you to open port 8443
 
