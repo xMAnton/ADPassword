@@ -45,6 +45,7 @@ The below steps are also in a how-to video: https://www.youtube.com/watch?v=AYms
 
 
 * This Zimlet may require you to open port 8443
+* Maybe you also want to `zmprov md domain.ext zimbraAuthFallbackToLocal FALSE` and disable locally set passwords.
 
 ## Debugging
 Do a password change while you run the following command:
