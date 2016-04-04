@@ -9,7 +9,7 @@ The original project by Antonio Messina (a.messina@iknowconsulting.it) https://g
 I recommend the cli install from below. If you do not want the cli install, you can also try the GUI most steps are in the video: https://www.youtube.com/watch?v=AYmsdw3tHoU
 
 ## Add the certificate from your Active Directory to the Zimbra server trust
-If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well. If you are not sure, configure your domain to auth againts AD first before installing this extension. 
+If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well. If you are not sure, configure your domain to auth against AD first before installing this extension. 
 
 * /opt/zimbra/j2sdk-20140721/bin/keytool -import -alias cacertclass1ca -keystore /opt/zimbra/java/jre/lib/security/cacerts -import -trustcacerts -file your-exported-cert.cer 
 * default password: changeit
