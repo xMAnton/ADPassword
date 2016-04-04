@@ -74,10 +74,19 @@
    <script type="text/javascript">
    function validateForm() {
       var password = document.getElementById('confirm').value;
+      var newPassword = document.getElementById('newPassword').value;
+      
+      if (password !== newPassword)
+      {
+         document.getElementById('messageDiv').innerHTML = 'New passwords do not match';
+         document.getElementById('submitBtn').style.display = "none";
+         return;      
+      }
+      
       var regexp = /^[a-zA-Z0-9-_]+$/;
       if (password.search(regexp) == -1)
       {
-         console.log('Invalid character in password');
+         document.getElementById('messageDiv').innerHTML = 'Invalid character in password';
          document.getElementById('submitBtn').style.display = "none";
          return;
       }
@@ -99,10 +108,12 @@
       
       if(score < 4)
       {
-         console.log('Password does not meet criteria');
+         
+         document.getElementById('messageDiv').innerHTML = 'Password does not meet criteria';
          document.getElementById('submitBtn').style.display = "none";
          return;
       }
+      document.getElementById('messageDiv').innerHTML = '';
       document.getElementById('submitBtn').style.display = "block";
 
    }
@@ -161,7 +172,7 @@
                             <tr>
                                 <td></td>
                                 <td><input type=submit id="submitBtn" class='zLoginButton' style="display:none"
-                                                     value="<fmt:message key="changePassword"/>"/></td>
+                                                     value="<fmt:message key="changePassword"/>"/><div id="messageDiv">Submit button appears after you<br> have chosen a correct password.</div></td>
                             </tr>
                         </table>
                     </form>
