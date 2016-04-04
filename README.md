@@ -8,44 +8,38 @@ The original project by Antonio Messina (a.messina@iknowconsulting.it) https://g
 
 The below steps are also in a how-to video: https://www.youtube.com/watch?v=AYmsdw3tHoU
 
-## Installation
-
-- As root, `mkdir -p /opt/zimbra/lib/ext/adpassword`
-- As root, `wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.1/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar`
-
 ## Add the certificate from your Active Directory to the Zimbra server trust
+If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well.
+
 * /opt/zimbra/j2sdk-20140721/bin/keytool -import -alias cacertclass1ca -keystore /opt/zimbra/java/jre/lib/security/cacerts -import -trustcacerts -file your-exported-cert.cer 
 * default password: changeit
 * keytool binary may be on a different location if you are not running 8.6
-* zmcontrol restart (after adding the certificate)
 
-## Configure authentication settings for your domain
+## Installation via the cli
 
-- Open the Zimbra Administration console
-- Select External LDAP as authentication mechanism
-- Type the LDAP URL and check Use SSL on port 636 (your certificate must be trusted, see below)
-- Type `(samaccountname=%u)` in the LDAP filter field
-- Specify `CN=Users, DC=DOMAIN, DC=EXT` in the LDAP search base field
-- Check "Use DN/Password to bind to external server"
-- Enter the Bind DN `CN=Administrator,CN=Users, DC=DOMAIN,DC=EXT` and its password
-- If Test passed succesfully, click Finish
-- Assign the new External change password listener: `ADPassword`
-- From the cli run as Zimbra user:
+Review your LDAP configuration in the commands below and then copy-paste them as root:
 
-         zmprov md domain.ext zimbraAuthLdapSearchBindDn "CN=Administrator,CN=Users, DC=DOMAIN,DC=EXT"
-         zmprov md domain.ext zimbraAuthLdapSearchBindPassword "admin-password-here"
-         zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
-         zmprov md domain.ext zimbraAuthLdapURL "ldaps://ad-server-ip-or-dnsname:636" 
-         zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users, DC=DOMAIN, DC=EXT"
-         zmprov md domain.ext zimbraAuthLdapSearchFilter "(samaccountname=%u)"
-         zmprov md domain.ext zimbraExternalGroupLdapSearchBase "CN=Users, DC=DOMAIN, DC=EXT"
-         zmprov md domain.ext zimbraExternalGroupLdapSearchFilter "(samaccountname=%u)"
-         zmprov md domain.ext zimbraPasswordChangeListener ADPassword
-         zmcontrol restart
-
-
+      mkdir -p /opt/zimbra/lib/ext/adpassword
+      wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.1/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar 
+      mv /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass-old
+      wget https://raw.githubusercontent.com/Zimbra-Community/ADPassword/master/patches/changepass -O /opt/zimbra/jetty-distribution-9.1.5.v20140505/webapps/zimbra/h/changepass
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapSearchBindDn "CN=serviceAccount,CN=Users,DC=DOMAIN,DC=EXT"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapSearchBindPassword "your-password-here"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapSearchFilter "(samaccountname=%u)"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthLdapURL "ldaps://ad-server-ip-or-dns:636"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraExternalGroupLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraExternalGroupLdapSearchFilter "(samaccountname=%u)"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthMech "ad"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthMechAdmin "ad"
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraPasswordChangeListener ADPassword
+      sudo -u zimbra /opt/zimbra/bin/zmprov gd domain.ext | grep -i ldap | grep -v Gal
+      sudo -u zimbra /opt/zimbra/bin/zmprov gd domain.ext | grep -i zimbraPasswordChangeListener
+      sudo -u zimbra /opt/zimbra/bin/zmprov md domain.ext zimbraAuthFallbackToLocal FALSE
+      sudo -u zimbra /opt/zimbra/bin/zmcontrol restart
+      
 * This extension may require you to open port 8443
-* Maybe you also want to `zmprov md domain.ext zimbraAuthFallbackToLocal FALSE` and disable locally set passwords.
 
 ## Debugging
 Do a password change while you run the following command:
