@@ -44,7 +44,7 @@ The below steps are also in a how-to video: https://www.youtube.com/watch?v=AYms
          zmcontrol restart
 
 
-* This Zimlet may require you to open port 8443
+* This extension may require you to open port 8443
 * Maybe you also want to `zmprov md domain.ext zimbraAuthFallbackToLocal FALSE` and disable locally set passwords.
 
 ## Debugging
