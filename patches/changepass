@@ -76,6 +76,13 @@
       var password = document.getElementById('confirm').value;
       var newPassword = document.getElementById('newPassword').value;
       
+      if (password.length < 1)
+      {
+         document.getElementById('messageDiv').innerHTML = 'Submit button appears after you<br> have chosen a correct password.';
+         document.getElementById('submitBtn').style.display = "none";
+         return;
+      }
+      
       if (password !== newPassword)
       {
          document.getElementById('messageDiv').innerHTML = 'New passwords do not match';
