@@ -41,6 +41,12 @@ Review your LDAP configuration in the commands below and then copy-paste them:
 * If you want a custom password complexity rules, see: https://github.com/Zimbra-Community/ADPassword/wiki/Adding-a-password-policy-check
 * This extension may require you to open port 8443
 
+## Support for Zentyal
+
+ADPassword also supports Zentyal as directory server, please check the wiki:
+
+[https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal] (https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal)
+
 ## Debugging
 Do a password change while you run the following command:
 
