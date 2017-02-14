@@ -11,9 +11,15 @@ I recommend the cli install from below. If you do not want the cli install, you 
 ## Add the certificate from your Active Directory to the Zimbra server trust
 If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well. If you are not sure, configure your domain to auth against AD first before installing this extension. 
 
+On 8.6:
 * /opt/zimbra/j2sdk-20140721/bin/keytool -import -alias cacertclass1ca -keystore /opt/zimbra/java/jre/lib/security/cacerts -import -trustcacerts -file your-exported-cert.cer 
 * default password: changeit
-* keytool binary may be on a different location if you are not running 8.6
+On 8.7:
+* /opt/zimbra/common/bin/keytool -import -alias win2012 -keystore /opt/zimbra/common/etc/java/cacerts -trustcacerts -file your-exported-cert.cer
+* default password: changeit
+* It will not work because of https://github.com/Zimbra-Community/ADPassword/issues/6
+
+You can get any ldaps ssl certificate by using OpenSSL: openssl s_client -connect servername:port, copy paste the cert from -----BEGIN CERTIFICATE----- to -----END CERTIFICATE----- and put it in a file on your server. Then import using above commands.
 
 ## Installation via the cli
 
