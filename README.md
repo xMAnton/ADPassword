@@ -14,6 +14,7 @@ If you use the same SSL certificate on your AD as on Zimbra there is a good chan
 On 8.6:
 * /opt/zimbra/j2sdk-20140721/bin/keytool -import -alias cacertclass1ca -keystore /opt/zimbra/java/jre/lib/security/cacerts -import -trustcacerts -file your-exported-cert.cer 
 * default password: changeit
+
 On 8.7:
 * /opt/zimbra/common/bin/keytool -import -alias win2012 -keystore /opt/zimbra/common/etc/java/cacerts -trustcacerts -file your-exported-cert.cer
 * default password: changeit
