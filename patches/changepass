@@ -183,19 +183,19 @@
                             <tr>
                                 <td class='zLoginLabelContainer'><label for="oldPassword"><fmt:message key="oldPassword"/>:</label></td>
                                 <td class='zLoginFieldContainer'>
-                                    <input id="oldPassword" autocomplete="off" class='zLoginField' name='password' type='p assword' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
+                                    <input id="oldPassword" autocomplete="off" class='zLoginField' name='password' type='password' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class='zLoginLabelContainer'><label for="newPassword"><fmt:message key="newPassword"/>:</label></td>
                                 <td class='zLoginFieldContainer'>
-                                    <input id="newPassword" oninput="validateForm()" autocomplete="off" class='zLoginField' name='loginNewPassword' type='p assword' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
+                                    <input id="newPassword" oninput="validateForm()" autocomplete="off" class='zLoginField' name='loginNewPassword' type='password' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class='zLoginLabelContainer'><label for="confirm"><fmt:message key="confirm"/>:</label></td>
                                 <td class='zLoginFieldContainer'>
-                                    <input id="confirm" style="display:none" oninput="validateForm()" autocomplete="off" class='zLoginField' name='loginConfirmNewPassword' type='p assword' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
+                                    <input id="confirm" style="display:none" oninput="validateForm()" autocomplete="off" class='zLoginField' name='loginConfirmNewPassword' type='password' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
                                 </td>
                             </tr>
                             <tr>
