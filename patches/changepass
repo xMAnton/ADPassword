@@ -176,7 +176,7 @@
                 </div>
             </c:if>
             <c:if test="${successfullLogin ne 'true'}">
-                <div id='ZLoginFormPanel' style="margin-left: 12%; min-width:400px; min-height:200px">
+                <div id='ZLoginFormPanel' style="margin-left: 12%;"><p style="color:white">&bull; Your password must NOT contain your username,<br> first name, last name and so on. <br>&bull; Do not re-use old passwords.</p>
                     <form method='post' name="changePassForm" action="" autocomplete="off" accept-charset="utf-8">
                         <input type="hidden" name="loginOp" value="login"/>
                         <table class="form">
