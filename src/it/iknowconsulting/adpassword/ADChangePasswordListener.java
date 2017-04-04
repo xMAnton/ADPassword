@@ -25,6 +25,7 @@ import com.zimbra.cs.account.ldap.ChangePasswordListener;
 import java.security.Security;
 import java.util.Map;
 import javax.naming.NamingException;
+import java.io.File;
 
 public class ADChangePasswordListener extends ChangePasswordListener {
             
@@ -34,8 +35,18 @@ public class ADChangePasswordListener extends ChangePasswordListener {
             Provisioning prov = Provisioning.getInstance();
             Domain domain = prov.getDomain(acct);
             Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-            // the keystore that holds trusted root certificates
-            System.setProperty("javax.net.ssl.trustStore", "/opt/zimbra/java/jre/lib/security/cacerts");
+
+            // the keystore that holds trusted root certificates            
+            File f = new File("/opt/zimbra/common/etc/java/cacerts");            
+            if (f.exists()) {
+               //8.7
+               System.setProperty("javax.net.ssl.trustStore", "/opt/zimbra/common/etc/java/cacerts");
+            }
+            else
+            {
+               //8.6
+               System.setProperty("javax.net.ssl.trustStore", "/opt/zimbra/java/jre/lib/security/cacerts");
+            }
             System.setProperty("javax.net.debug", "all");
             ADConnection adc = new ADConnection(domain);
             adc.updatePassword(acct.getUid(), newPassword);
