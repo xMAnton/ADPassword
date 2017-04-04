@@ -26,7 +26,7 @@ You can get any ldaps ssl certificate by using OpenSSL: openssl s_client -connec
 Review your LDAP configuration in the commands below and then copy-paste them:
 
       mkdir -p /opt/zimbra/lib/ext/adpassword
-      wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.1/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar 
+      wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.3/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar 
       su zimbra
       zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
       zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
