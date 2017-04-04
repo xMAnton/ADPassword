@@ -18,7 +18,6 @@ On 8.6:
 On 8.7:
 * /opt/zimbra/common/bin/keytool -import -alias win2012 -keystore /opt/zimbra/common/etc/java/cacerts -trustcacerts -file your-exported-cert.cer
 * default password: changeit
-* It will not work because of https://github.com/Zimbra-Community/ADPassword/issues/6
 
 You can get any ldaps ssl certificate by using OpenSSL: openssl s_client -connect servername:port, copy paste the cert from -----BEGIN CERTIFICATE----- to -----END CERTIFICATE----- and put it in a file on your server. Then import using above commands.
 
