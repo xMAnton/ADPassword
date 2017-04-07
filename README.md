@@ -8,6 +8,13 @@ The original project by Antonio Messina (a.messina@iknowconsulting.it) https://g
 
 I recommend the cli install from below. If you do not want the cli install, you can also try the GUI most steps are in the video: https://www.youtube.com/watch?v=AYmsdw3tHoU
 
+## How does it work?
+
+1. The user clicks change password in the Zimbra UI
+2. The extension will find the users DN in external AD/LDAP based on zimbraAuthLdapSearchFilter in zimbraAuthLdapSearchBase. 
+3. The extension will not search in case you have set `External LDAP account for Authentication`. The DN from  zimbraAuthLdapExternalDn will then be used.
+4. Finally the extension will change the password using bind credentials over a secure connection.
+
 ## Add the certificate from your Active Directory to the Zimbra server trust
 If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well. If you are not sure, configure your domain to auth against AD first before installing this extension. 
 
