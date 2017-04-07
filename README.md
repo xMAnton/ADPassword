@@ -11,7 +11,7 @@ I recommend the cli install from below. If you do not want the cli install, you 
 ## How does it work?
 
 1. The user clicks change password in the Zimbra UI.
-2. The extension will find the users DN in external AD/LDAP based on zimbraAuthLdapSearchFilter in zimbraAuthLdapSearchBase. 
+2. The extension will find the user's DN in external AD/LDAP based on zimbraAuthLdapSearchFilter in zimbraAuthLdapSearchBase. 
 3. The extension will not search in case you have set `External LDAP account for Authentication`. The DN from  zimbraAuthLdapExternalDn will then be used.
 4. Finally the extension will change the password using bind credentials over a secure connection.
 
