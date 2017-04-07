@@ -49,7 +49,7 @@ public class ADChangePasswordListener extends ChangePasswordListener {
             }
             System.setProperty("javax.net.debug", "all");
             ADConnection adc = new ADConnection(domain);
-            adc.updatePassword(acct.getUid(), newPassword);
+            adc.updatePassword(acct, newPassword);
         } catch (NamingException ex) {
             throw AccountServiceException.PERM_DENIED(ex.toString());
         }

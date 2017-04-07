@@ -24,6 +24,7 @@
 
 package it.iknowconsulting.adpassword;
 
+import com.zimbra.cs.account.Account;
 import com.zimbra.cs.account.Domain;
 import java.util.Hashtable;
 import javax.naming.Context;
@@ -34,17 +35,22 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 
 public class ADConnection {
 
     DirContext ldapContext;
     String authLdapSearchBase;
+    
+    //authLdapSearchFilter see readme: zmprov md domain.ext zimbraAuthLdapSearchFilter "(samaccountname=%u)"
+    String authLdapSearchFilter;
 
     public ADConnection(Domain domain) throws NamingException {
         String authLdapURL = domain.getAuthLdapURL()[0];
         String authLdapSearchBindDn = domain.getAuthLdapSearchBindDn();
         String authLdapSearchBindPassword = domain.getAuthLdapSearchBindPassword();
         authLdapSearchBase = domain.getAuthLdapSearchBase();
+        authLdapSearchFilter = domain.getAuthLdapSearchFilter();
 
         Hashtable ldapEnv = new Hashtable(11);
         ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
@@ -56,7 +62,8 @@ public class ADConnection {
         ldapContext = new InitialDirContext(ldapEnv);
     }
 
-    public void updatePassword(String username, String password) throws NamingException {
+    public void updatePassword(Account acct, String password) throws NamingException {
+        String username = acct.getUid();
         String quotedPassword = "\"" + password + "\"";
         char unicodePwd[] = quotedPassword.toCharArray();
         byte pwdArray[] = new byte[unicodePwd.length * 2];
@@ -66,25 +73,27 @@ public class ADConnection {
         }
         ModificationItem[] mods = new ModificationItem[1];
         mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, new BasicAttribute("UnicodePwd", pwdArray));
-        ldapContext.modifyAttributes("cn=" + username + "," + authLdapSearchBase, mods);
+        
+        //if ExternalDN is set for the user in Zimbra, use that, otherwise fetch the DN
+        if ("".equals(acct.getAuthLdapExternalDn()))
+        {
+           ldapContext.modifyAttributes(fetchUser(username), mods);                    
+        }
+        else
+        {
+           ldapContext.modifyAttributes(acct.getAuthLdapExternalDn(), mods);
+        }
     }
 
-    NamingEnumeration get(String searchFilter) throws NamingException {
-        String returnedAttrs[]={"givenName","sn","name","sAMAccountName","userPrincipalName","mail","userAccountControl"};
+    String fetchUser(String username) throws NamingException {
+        String returnedAttrs[]={"dn"};
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         searchControls.setReturningAttributes(returnedAttrs);
+        String searchFilter = authLdapSearchFilter.replace("%u",username);
         NamingEnumeration results = ldapContext.search(authLdapSearchBase, searchFilter, searchControls);
-        return results;        
-    }
-    
-    public NamingEnumeration getUsers() throws NamingException {
-        String searchFilter = "(userPrincipalName=*)";
-        return get(searchFilter);
-    }
-
-    public NamingEnumeration fetchUser(String uid) throws NamingException {
-        String searchFilter = "(sAMAccountName="+uid+")";
-        return get(searchFilter);
+          
+        SearchResult sr = (SearchResult) results.next();           
+        return sr.getNameInNamespace();              
     }
 }
