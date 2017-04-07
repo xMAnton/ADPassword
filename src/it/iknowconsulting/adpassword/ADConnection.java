@@ -75,13 +75,13 @@ public class ADConnection {
         mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, new BasicAttribute("UnicodePwd", pwdArray));
         
         //if ExternalDN is set for the user in Zimbra, use that, otherwise fetch the DN
-        if ("".equals(acct.getAuthLdapExternalDn()))
+        if ( (acct.getAuthLdapExternalDn() != null) && (!acct.getAuthLdapExternalDn().isEmpty()))
         {
-           ldapContext.modifyAttributes(fetchUser(username), mods);                    
+            ldapContext.modifyAttributes(acct.getAuthLdapExternalDn(), mods);
         }
         else
         {
-           ldapContext.modifyAttributes(acct.getAuthLdapExternalDn(), mods);
+            ldapContext.modifyAttributes(fetchUser(username), mods);                                
         }
     }
 
