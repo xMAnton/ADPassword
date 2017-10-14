@@ -1,4 +1,4 @@
-/*
+c/*
    Copyright 2012 Antonio Messina (a.messina@iknowconsulting.it)
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ public class ADChangePasswordListener extends ChangePasswordListener {
             Domain domain = prov.getDomain(acct);
             Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
             // the keystore that holds trusted root certificates
-            System.setProperty("javax.net.ssl.trustStore", "/opt/zimbra/common/ete/java/cacerts");
+            System.setProperty("javax.net.ssl.trustStore", "/opt/zimbra/common/etc/java/cacerts");
             System.setProperty("javax.net.debug", "all");
             ADConnection adc = new ADConnection(domain);
             adc.updatePassword(acct.getDisplayName(), newPassword);
