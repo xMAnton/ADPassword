@@ -4,7 +4,7 @@ ADPassword
 A Zimbra server extension to change Active Directory passwords from the Zimbra web client.
 
 
-The original project by Antonio Messina (antonio.messina@icar.cnr.it) https://github.com/xMAnton/ADPassword this version is tested on Zimbra 8.7 and Windows 2016.
+The original project by Antonio Messina (antonio.messina@icar.cnr.it) https://github.com/xMAnton/ADPassword this version is tested on Zimbra 8.8.12 and Windows 2016.
 
 I recommend the cli install from below. If you do not want the cli install, you can also try the GUI most steps are in the video: https://www.youtube.com/watch?v=AYmsdw3tHoU
 
@@ -52,7 +52,7 @@ Review your LDAP configuration in the commands below and then copy-paste them:
       zmcontrol restart
 
 * If you want a custom password complexity rules, see: https://github.com/Zimbra-Community/ADPassword/wiki/Adding-a-password-policy-check
-* This extension may require you to open port 8443
+* Sometimes when the user clicks the change password option, Zimbra goes to a URL on port 8443. To fix: `zmprov mcf zimbraChangePasswordURL https://your-zimbra-server.com/h/changepass?skin=harmony`
 
 ## Support for Zentyal
 
