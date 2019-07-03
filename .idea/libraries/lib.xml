@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/dom4j-1.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/zimbrastore.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/zimbracommon.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
