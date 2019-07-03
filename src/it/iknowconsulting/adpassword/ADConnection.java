@@ -81,7 +81,10 @@ public class ADConnection {
         }
         else
         {
-            ldapContext.modifyAttributes(fetchUser(username), mods);                                
+            System.out.print("ADPassword->ADConnection->updatePassword->username: "+ username);
+            System.out.print("ADPassword->ADConnection->updatePassword->fetchUser(username): "+ fetchUser(username));
+            System.out.print("ADPassword->ADConnection->updatePassword->mods: "+ mods);
+            ldapContext.modifyAttributes(fetchUser(username), mods);
         }
     }
 
@@ -91,9 +94,11 @@ public class ADConnection {
         searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         searchControls.setReturningAttributes(returnedAttrs);
         String searchFilter = authLdapSearchFilter.replace("%u",username);
+        System.out.print("ADPassword->ADConnection->fetchUser->searchFilter: "+ searchFilter);
         NamingEnumeration results = ldapContext.search(authLdapSearchBase, searchFilter, searchControls);
           
-        SearchResult sr = (SearchResult) results.next();           
+        SearchResult sr = (SearchResult) results.next();
+        System.out.print("ADPassword->ADConnection->fetchUser->getNameInNamespace: "+ sr.getNameInNamespace());
         return sr.getNameInNamespace();              
     }
 }
