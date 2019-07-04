@@ -18,6 +18,8 @@ https://github.com/Zimbra-Community/ADPassword#installation-via-the-cli
 3. The extension will not search in case you have set `External LDAP account for Authentication`. The DN from  zimbraAuthLdapExternalDn will then be used.
 4. Finally the extension will change the password using bind credentials over a secure connection.
 
+Please note: ADPassword does not honor password history (https://blogs.technet.microsoft.com/fieldcoding/2013/01/09/resetting-passwords-honoring-password-history-or-whats-happening-under-the-hood-when-changing-resetting-passwords/)
+
 ## Add the certificate from your Active Directory to the Zimbra server trust
 If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well. If you are not sure, configure your domain to auth against AD first before installing this extension. 
 
