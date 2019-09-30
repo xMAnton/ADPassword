@@ -33,6 +33,8 @@ On 8.7:
 
 You can get any ldaps ssl certificate by using OpenSSL: openssl s_client -connect servername:port, copy paste the cert from -----BEGIN CERTIFICATE----- to -----END CERTIFICATE----- and put it in a file on your server. Then import using above commands.
 
+Please note some users reported that on recent Zimbra versions you must use a DNS domain name to connect to the AD server, using IP addresses no longer works and is not secure SSL/TLS.
+
 ## Installation via the cli
 
 Review your LDAP configuration in the commands below and then copy-paste them:
