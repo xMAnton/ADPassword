@@ -22,7 +22,7 @@ import com.zimbra.cs.account.AccountServiceException;
 import com.zimbra.cs.account.Domain;
 import com.zimbra.cs.account.Provisioning;
 import com.zimbra.cs.account.ldap.ChangePasswordListener;
-import java.security.Security;
+//import java.security.Security;
 import java.util.Map;
 import javax.naming.NamingException;
 import java.io.File;
@@ -34,7 +34,7 @@ public class ADChangePasswordListener extends ChangePasswordListener {
         try {
             Provisioning prov = Provisioning.getInstance();
             Domain domain = prov.getDomain(acct);
-            Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+            //Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 
             // the keystore that holds trusted root certificates            
             File f = new File("/opt/zimbra/common/etc/java/cacerts");            
