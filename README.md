@@ -4,7 +4,7 @@ ADPassword
 A Zimbra server extension to change Active Directory passwords from the Zimbra web client.
 
 
-The original project by Antonio Messina (antonio.messina@icar.cnr.it) https://github.com/xMAnton/ADPassword this version is tested on Zimbra 8.8.12 and Windows 2016.
+The original project by Antonio Messina (antonio.messina@icar.cnr.it) https://github.com/xMAnton/ADPassword this version is tested on Zimbra 8.8.15 patch 5 and Windows 2016.
 
 I recommend the cli install from below. If you do not want the cli install, you can also try the GUI most steps are in the video: https://www.youtube.com/watch?v=AYmsdw3tHoU
 
@@ -21,13 +21,8 @@ https://github.com/Zimbra-Community/ADPassword#installation-via-the-cli
 Please note: ADPassword does not honor password history (https://blogs.technet.microsoft.com/fieldcoding/2013/01/09/resetting-passwords-honoring-password-history-or-whats-happening-under-the-hood-when-changing-resetting-passwords/)
 
 ## Add the certificate from your Active Directory to the Zimbra server trust
-If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well. If you are not sure, configure your domain to auth against AD first before installing this extension. 
+If you use the same SSL certificate on your AD as on Zimbra there is a good change you can skip this step. If you already use your AD server for external auth, you can probably skip this as well. If you are not sure, configure your domain to auth against AD first before installing this extension. As of Zimbra 8.8.15 you MUST configure your AD server by it's DNS FQDN, you cannot use the change password extension by using the IP of your AD. This is because Java only proceeds if the SSL certificate matches the domain name in the configuration. (zimbraAuthLdapURL must be a domain, example of self signed windows cert: `zmprov md barrydegraaff.tk zimbraAuthLdapURL "ldaps://WIN-M7ME1BSBTRY.barrydegraaff.tk:636"`)
 
-On 8.6:
-* /opt/zimbra/j2sdk-20140721/bin/keytool -import -alias cacertclass1ca -keystore /opt/zimbra/java/jre/lib/security/cacerts -import -trustcacerts -file your-exported-cert.cer 
-* default password: changeit
-
-On 8.7:
 * /opt/zimbra/common/bin/keytool -import -alias win2012 -keystore /opt/zimbra/common/etc/java/cacerts -trustcacerts -file your-exported-cert.cer
 * default password: changeit
 
@@ -47,7 +42,7 @@ Review your LDAP configuration in the commands below and then copy-paste them:
       zmprov md domain.ext zimbraAuthLdapSearchBindDn "CN=serviceAccount,CN=Users,DC=DOMAIN,DC=EXT"
       zmprov md domain.ext zimbraAuthLdapSearchBindPassword "your-password-here"
       zmprov md domain.ext zimbraAuthLdapSearchFilter "(samaccountname=%u)"
-      zmprov md domain.ext zimbraAuthLdapURL "ldaps://ad-server-ip-or-dns:636"
+      zmprov md domain.ext zimbraAuthLdapURL "ldaps://ad-server-dns-name:636"
       zmprov md domain.ext zimbraExternalGroupLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
       zmprov md domain.ext zimbraExternalGroupLdapSearchFilter "(samaccountname=%u)"
       zmprov md domain.ext zimbraAuthMech "ad"
