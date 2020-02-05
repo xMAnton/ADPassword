@@ -58,9 +58,8 @@ Review your LDAP configuration in the commands below and then copy-paste them:
 
 ## Support for Zentyal
 
-ADPassword also supports Zentyal as directory server, please check the wiki:
-
-[https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal] (https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal)
+ADPassword also supports Zentyal as directory server, please check [the wiki](https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal) for 
+configuration details.
 
 ## Debugging
 Do a password change while you run the following command:
