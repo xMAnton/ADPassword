@@ -64,6 +64,7 @@ public class ADConnection {
 
     public void updatePassword(Account acct, String password) throws NamingException {
         String username = acct.getUid();
+        String userTest;
         String quotedPassword = "\"" + password + "\"";
         char unicodePwd[] = quotedPassword.toCharArray();
         byte pwdArray[] = new byte[unicodePwd.length * 2];
@@ -82,11 +83,14 @@ public class ADConnection {
         else
         {
             System.out.print("ADPassword->ADConnection->updatePassword->username: "+ username);
-            System.out.print("ADPassword->ADConnection->updatePassword->fetchUser(username): "+ fetchUser(username));
+            userTest=fetchUser(username);
+            if(userTest == null)
+                return;
+            System.out.print("ADPassword->ADConnection->updatePassword->fetchUser(username): "+ userTest);
             System.out.print("ADPassword->ADConnection->updatePassword->mods: "+ mods);
-            ldapContext.modifyAttributes(fetchUser(username), mods);
+            ldapContext.modifyAttributes(userTest, mods);
         }
-    }
+    }   
 
     String fetchUser(String username) throws NamingException {
         String returnedAttrs[]={"dn"};
@@ -96,9 +100,12 @@ public class ADConnection {
         String searchFilter = authLdapSearchFilter.replace("%u",username);
         System.out.print("ADPassword->ADConnection->fetchUser->searchFilter: "+ searchFilter);
         NamingEnumeration results = ldapContext.search(authLdapSearchBase, searchFilter, searchControls);
-          
+        
+        if(results == null)
+            return null;
         SearchResult sr = (SearchResult) results.next();
         System.out.print("ADPassword->ADConnection->fetchUser->getNameInNamespace: "+ sr.getNameInNamespace());
-        return sr.getNameInNamespace();              
+        return sr.getNameInNamespace(); 
+
     }
 }
