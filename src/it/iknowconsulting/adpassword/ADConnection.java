@@ -90,7 +90,7 @@ public class ADConnection {
             System.out.print("ADPassword->ADConnection->updatePassword->mods: "+ mods);
             ldapContext.modifyAttributes(userTest, mods);
         }
-    }   
+    }
 
     String fetchUser(String username) throws NamingException {
         String returnedAttrs[]={"dn"};
@@ -101,7 +101,7 @@ public class ADConnection {
         System.out.print("ADPassword->ADConnection->fetchUser->searchFilter: "+ searchFilter);
         NamingEnumeration results = ldapContext.search(authLdapSearchBase, searchFilter, searchControls);
         
-        if(results == null)
+        if(!results.hasMore())
             return null;
         SearchResult sr = (SearchResult) results.next();
         System.out.print("ADPassword->ADConnection->fetchUser->getNameInNamespace: "+ sr.getNameInNamespace());
