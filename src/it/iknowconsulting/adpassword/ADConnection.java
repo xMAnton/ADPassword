@@ -24,8 +24,12 @@
 
 package it.iknowconsulting.adpassword;
 
+import com.zimbra.common.service.ServiceException;
 import com.zimbra.cs.account.Account;
+import com.zimbra.cs.account.AccountServiceException;
 import com.zimbra.cs.account.Domain;
+import com.zimbra.cs.account.Provisioning;
+
 import java.util.Hashtable;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -62,7 +66,7 @@ public class ADConnection {
         ldapContext = new InitialDirContext(ldapEnv);
     }
 
-    public void updatePassword(Account acct, String password) throws NamingException {
+    public void updatePassword(Account acct, String password) throws NamingException, ServiceException {
         String username = acct.getUid();
         String userTest;
         String quotedPassword = "\"" + password + "\"";
@@ -74,7 +78,7 @@ public class ADConnection {
         }
         ModificationItem[] mods = new ModificationItem[1];
         mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, new BasicAttribute("UnicodePwd", pwdArray));
-        
+
         //if ExternalDN is set for the user in Zimbra, use that, otherwise fetch the DN
         if ( (acct.getAuthLdapExternalDn() != null) && (!acct.getAuthLdapExternalDn().isEmpty()))
         {
@@ -83,9 +87,17 @@ public class ADConnection {
         else
         {
             System.out.print("ADPassword->ADConnection->updatePassword->username: "+ username);
-            userTest=fetchUser(username);
-            if(userTest == null)
-                return;
+            userTest = fetchUser(username);
+            if (userTest == null) {
+                Provisioning prov = Provisioning.getInstance();
+                Domain domain = prov.getDomain(acct);
+                if (!domain.isAuthFallbackToLocal()) {
+                    throw AccountServiceException.PERM_DENIED("User not found while updating password to AD! Please check your connection settings");
+                } else {
+                    System.out.print("ADPassword->ADConnection->updatePassword->fetchUser: "+ username+" not found in AD, skipping");
+                    return;
+                }
+            }
             System.out.print("ADPassword->ADConnection->updatePassword->fetchUser(username): "+ userTest);
             System.out.print("ADPassword->ADConnection->updatePassword->mods: "+ mods);
             ldapContext.modifyAttributes(userTest, mods);
@@ -101,11 +113,11 @@ public class ADConnection {
         System.out.print("ADPassword->ADConnection->fetchUser->searchFilter: "+ searchFilter);
         NamingEnumeration results = ldapContext.search(authLdapSearchBase, searchFilter, searchControls);
         
-        if(!results.hasMore())
+        if (!results.hasMore()) {
             return null;
+        }
         SearchResult sr = (SearchResult) results.next();
         System.out.print("ADPassword->ADConnection->fetchUser->getNameInNamespace: "+ sr.getNameInNamespace());
         return sr.getNameInNamespace(); 
-
     }
 }

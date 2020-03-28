@@ -56,6 +56,12 @@ Review your LDAP configuration in the commands below and then copy-paste them:
 * If you want a custom password complexity rules, see: https://github.com/Zimbra-Community/ADPassword/wiki/Adding-a-password-policy-check
 * Sometimes when the user clicks the change password option, Zimbra goes to a URL on port 8443. To fix: `zmprov mcf zimbraChangePasswordURL https://your-zimbra-server.com/h/changepass?skin=harmony`
 
+## Zimbra only accounts with local password
+
+By setting `zimbraAuthFallbackToLocal` to *TRUE* you can skip AD password update, which allows creating a mailbox 
+without a corresponding user using Zimbra password backend. If you require this, it's **recommended** to enable this 
+only after successfully testing a password update against AD. 
+
 ## Support for Zentyal
 
 ADPassword also supports Zentyal as directory server, please check the wiki:
