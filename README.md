@@ -59,7 +59,7 @@ Review your LDAP configuration in the commands below and then copy-paste them:
 ## Zimbra only accounts with local password
 
 By setting `zimbraAuthFallbackToLocal` to *TRUE* you can skip AD password update, which allows creating a mailbox 
-without a corresponding user using Zimbra password backend. If you require this, it's **recommended** to enable this 
+without a corresponding user using Zimbra password backend. If you require this, it's **recommended** to enable it 
 only after successfully testing a password update against AD. 
 
 ## Support for Zentyal
@@ -71,9 +71,11 @@ ADPassword also supports Zentyal as directory server, please check the wiki:
 ## Debugging
 Do a password change while you run the following command:
 
-     tail -f /opt/zimbra/log/mailbox.log
+     tail -f /opt/zimbra/log/zmmailboxd.out
 
-Verify your configuration:     
+You should find *ADPassword* messages passing by explaining what's going on.
+
+Verify your configuration:
 
      zmprov gd domain.ext | grep -i ldap | grep -v Gal
 
