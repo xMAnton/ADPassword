@@ -4,9 +4,9 @@ ADPassword
 A Zimbra server extension to change Active Directory passwords from the Zimbra web client.
 
 
-The original project by Antonio Messina (antonio.messina@icar.cnr.it) https://github.com/xMAnton/ADPassword this version is tested on Zimbra 8.8.15 patch 5 and Windows 2016.
+The original project by Antonio Messina (antonio.messina@icar.cnr.it) https://github.com/xMAnton/ADPassword this version is tested on Zimbra 8.8.15 patch 5 and Windows 2016. Zimbra 9 patch 14 and Windows 2019.
 
-I recommend the cli install from below. If you do not want the cli install, you can also try the GUI most steps are in the video: https://www.youtube.com/watch?v=AYmsdw3tHoU
+I recommend the cli install from below.
 
 To get the jar follow the instruction below:
 https://github.com/Zimbra-Community/ADPassword#installation-via-the-cli
@@ -87,9 +87,10 @@ Example issues:
      A network service error has occurred
      system failure: java.lang.NullPointerException
 
-## License
-* originally Copyright 2012 Antonio Messina (a.messina@iknowconsulting.it)
+## License* 
+* Copyright (C) 2016-2021  Barry de Graaff [Zeta Alliance](https://zetalliance.org/)
 * packaging, fixes and adjustments for ZCS 8.5/8.6 Copyright 2016 VNC AG
+* originally Copyright 2012 Antonio Messina (a.messina@iknowconsulting.it)
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
