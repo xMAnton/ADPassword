@@ -1,0 +1,215 @@
+<%@ page buffer="8kb" autoFlush="true" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="zm" uri="com.zimbra.zm" %>
+<%@ taglib prefix="app" uri="com.zimbra.htmlclient" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="com.zimbra.i18n" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<app:handleError>
+    <zm:getMailbox var="mailbox"/>
+    <c:set var="refreshSkin" value="${true}" scope="request"/>
+    <c:remove var="skin" scope="session"/>
+    <app:skin mailbox="${mailbox}" />
+    <c:choose>
+    <c:when test="${not empty mailbox.prefs.locale}">
+        <fmt:setLocale value='${mailbox.prefs.locale}' scope='request' />
+    </c:when>
+    <c:otherwise>
+        <fmt:setLocale value='${pageContext.request.locale}' scope='request' />
+    </c:otherwise>
+    </c:choose>
+    <fmt:setBundle basename="/messages/ZhMsg" scope='request' />
+    
+    <c:set var="successfullLogin" value="false"/>
+    <fmt:message var="errorMessage" key="enterNewPassword"/>
+    <c:set var="messageImage" value="dwt/ImgInformation_32.png"/>
+    <c:choose>
+        <c:when test="${(not empty param.loginNewPassword or not empty param.loginConfirmNewPassword) and (param.loginNewPassword ne param.loginConfirmNewPassword)}">
+            <fmt:message var="errorMessage" key="bothNewPasswordsMustMatch"/>
+            <c:set var="messageImage" value="dwt/ImgCritical_32.png"/>
+        </c:when>
+        <c:when test="${(param.loginOp eq 'login') && ((empty param.loginNewPassword) or (empty param.password) or (empty param.loginConfirmNewPassword))}">
+            <fmt:message var="errorMessage" key="passwordFieldMissing"/>
+            <c:set var="messageImage" value="dwt/ImgCritical_32.png"/>
+        </c:when>
+        <c:when test="${(param.loginOp eq 'login') && (not empty param.loginNewPassword) && (not empty param.password) && (pageContext.request.method eq 'POST')}">
+            <c:catch var="loginException">
+                <zm:changePassword username="${mailbox.name}" password="${param.password}"
+                                   newpassword="${param.loginNewPassword}"
+                                   rememberme="${param.zrememberme == '1'}"/>
+                <c:set var="successfullLogin" value="true"/>
+                <fmt:message var="errorMessage" key="passwordChangeSucceededCloseWindow"/>
+            </c:catch>
+            <c:if test="${loginException != null}">
+                <zm:getException var="error" exception="${loginException}"/>
+                <c:set var="errorCode" value="${error.code}"/>
+                <fmt:message var="errorMessage" key="${errorCode}"/>
+                <c:set var="messageImage" value="dwt/ImgCritical_32.png"/>
+                <c:forEach var="arg" items="${error.arguments}">
+                    <fmt:message var="errorMessage" key="${errorCode}.${arg.name}">
+                        <fmt:param value="${arg.val}"/>
+                    </fmt:message>
+                </c:forEach>
+            </c:if>
+        </c:when>
+
+    </c:choose>
+    <zm:getDomainInfo var="domainInfo" by="virtualHostname" value="${zm:getServerName(pageContext)}"/>
+</app:handleError>
+
+<html>
+
+<head>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <title><fmt:message key="changePassword"/></title>
+    <c:url var='cssurl' value='/css/common,login,zhtml,${skin},skin.css'>
+        <c:param name="skin" value="${skin}" />
+    </c:url>
+    <link rel="stylesheet" type="text/css" href="${cssurl}">
+    <fmt:message key="favIconUrl" var="favIconUrl"/>
+    <link rel="SHORTCUT ICON" href="<c:url value='${favIconUrl}'/>">
+   <script type="text/javascript">
+   function validateForm() {
+      var password = document.getElementById('confirm').value;
+      var newPassword = document.getElementById('newPassword').value;
+      
+      if (newPassword.length < 1)
+      {
+         document.getElementById('messageDiv').innerHTML = 'Submit button appears after you<br> have chosen a correct password.';
+         document.getElementById('submitBtn').style.display = "none";
+         document.getElementById('confirm').style.display = "none";
+         return;
+      }
+
+      if (newPassword.length < 10)
+      {
+       	 document.getElementById('messageDiv').innerHTML = 'Minimum length 10 characters';
+         document.getElementById('submitBtn').style.display = "none";
+         document.getElementById('confirm').style.display = "none";
+         return;
+      }
+      
+      var regexp = /^[a-zA-Z0-9-_]+$/;
+      if (newPassword.search(regexp) == -1)
+      {
+         document.getElementById('messageDiv').innerHTML = 'Invalid character in password';
+         document.getElementById('submitBtn').style.display = "none";
+         document.getElementById('confirm').style.display = "none";
+         return;
+      }
+
+      var score = 0;
+   
+      if (newPassword.match(/[0-9]/))
+         score++;
+      if (newPassword.match(/[a-z]/))
+         score++;
+      if (newPassword.match(/[A-Z]/))
+         score++;
+      if (newPassword.match(/[-_]/))
+         score++;
+      if (newPassword.length < 8)
+      {
+         score = 0;   
+      }
+      
+      if(score < 4)
+      {
+         
+         document.getElementById('messageDiv').innerHTML = 'Password does not meet criteria<br>Should have: A-Z a-z 0-9 and - (dash) or _ (underscore)';
+         document.getElementById('submitBtn').style.display = "none";
+         document.getElementById('confirm').style.display = "none";
+         return;
+      }
+
+      if (password.length < 1)
+      {
+       	 document.getElementById('messageDiv').innerHTML = 'Please confirm new password';
+         document.getElementById('submitBtn').style.display = "none";
+         document.getElementById('confirm').style.display = "block";
+         return;
+      }
+
+
+      if (password !== newPassword)
+      {
+       	 document.getElementById('messageDiv').innerHTML = 'New passwords do not match';
+         document.getElementById('submitBtn').style.display = "none";
+         document.getElementById('confirm').style.display = "block";
+         return;
+      }
+
+      document.getElementById('messageDiv').innerHTML = '';
+      document.getElementById('confirm').style.display = "block";
+      document.getElementById('submitBtn').style.display = "block";
+   }
+   </script>
+
+</head>
+<body <c:if test="${successfullLogin ne 'true'}">
+        onload="document.changePassForm.password.focus();"
+        </c:if>>
+    <div class="LoginScreen">
+        <div class="center">
+            <div class="contentBox">
+            <h1>
+                <a href="http://www.zimbra.com/" target="_new">
+                    <div class='ImgLoginBanner' style="margin: 20px 0 0 20px;"></div>
+                </a>
+            </h1>
+            <c:if test="${not empty errorMessage}">
+                <!-- ${fn:escapeXml(error.stackStrace)} -->
+                <div id='ZLoginErrorPanel'>
+                    <table width=100%>
+                        <tr>
+                            <td valign='top' width='40'>
+                                <img alt='<fmt:message key="ALT_ERROR"/>' src="<app:imgurl value='${messageImage}'/>"/>
+                            </td>
+                            <td class='errorText'>
+                                <c:out value="${errorMessage}"/> 
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </c:if>
+            <c:if test="${successfullLogin ne 'true'}">
+                <div id='ZLoginFormPanel' style="margin-left: 12%;"><p style="color:white">&bull; Your password must NOT contain your username,<br> first name, last name and so on. <br>&bull; Do not re-use old passwords.</p>
+                    <form method='post' name="changePassForm" action="" autocomplete="off" accept-charset="utf-8">
+                        <input type="hidden" name="loginOp" value="login"/>
+                        <table class="form">
+                            <tr>
+                                <td class='zLoginLabelContainer'><label for="oldPassword"><fmt:message key="oldPassword"/>:</label></td>
+                                <td class='zLoginFieldContainer'>
+                                    <input id="oldPassword" autocomplete="off" class='zLoginField' name='password' type='password' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class='zLoginLabelContainer'><label for="newPassword"><fmt:message key="newPassword"/>:</label></td>
+                                <td class='zLoginFieldContainer'>
+                                    <input id="newPassword" oninput="validateForm()" autocomplete="off" class='zLoginField' name='loginNewPassword' type='password' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class='zLoginLabelContainer'><label for="confirm"><fmt:message key="confirm"/>:</label></td>
+                                <td class='zLoginFieldContainer'>
+                                    <input id="confirm" style="display:none" oninput="validateForm()" autocomplete="off" class='zLoginField' name='loginConfirmNewPassword' type='password' value="" maxlength="${domainInfo.webClientMaxInputBufferLength}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type=submit id="submitBtn" class='zLoginButton' style="display:none"
+                                                     value="<fmt:message key="changePassword"/>"/><br><div style="width:300px; height:50px;font-weight:700" id="messageDiv">Submit button appears after you<br> have chosen a correct password.</div></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </c:if>
+            </div>
+            <div class="decor1"></div>
+        </div>
+    </div> 
+</body>
+</html>
