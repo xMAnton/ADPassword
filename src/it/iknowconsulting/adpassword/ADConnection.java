@@ -45,7 +45,7 @@ public class ADConnection {
 
     DirContext ldapContext;
     String authLdapSearchBase;
-    
+
     //authLdapSearchFilter see readme: zmprov md domain.ext zimbraAuthLdapSearchFilter "(samaccountname=%u)"
     String authLdapSearchFilter;
 
@@ -86,7 +86,7 @@ public class ADConnection {
         }
         else
         {
-            System.out.print("ADPassword->ADConnection->updatePassword->username: "+ username);
+            System.out.println("ADPassword->ADConnection->updatePassword->username: "+ username);
             userTest = fetchUser(username);
             if (userTest == null) {
                 Provisioning prov = Provisioning.getInstance();
@@ -94,12 +94,12 @@ public class ADConnection {
                 if (!domain.isAuthFallbackToLocal()) {
                     throw AccountServiceException.PERM_DENIED("User not found while updating password to AD! Please check your connection settings");
                 } else {
-                    System.out.print("ADPassword->ADConnection->updatePassword->fetchUser: "+ username+" not found in AD, skipping");
+                    System.out.println("ADPassword->ADConnection->updatePassword->fetchUser: "+ username+" not found in AD, skipping");
                     return;
                 }
             }
-            System.out.print("ADPassword->ADConnection->updatePassword->fetchUser(username): "+ userTest);
-            System.out.print("ADPassword->ADConnection->updatePassword->mods: "+ mods);
+            System.out.println("ADPassword->ADConnection->updatePassword->fetchUser(username): "+ userTest);
+            System.out.println("ADPassword->ADConnection->updatePassword->mods: "+ mods);
             ldapContext.modifyAttributes(userTest, mods);
         }
     }
@@ -110,14 +110,14 @@ public class ADConnection {
         searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         searchControls.setReturningAttributes(returnedAttrs);
         String searchFilter = authLdapSearchFilter.replace("%u",username);
-        System.out.print("ADPassword->ADConnection->fetchUser->searchFilter: "+ searchFilter);
+        System.out.println("ADPassword->ADConnection->fetchUser->searchFilter: "+ searchFilter);
         NamingEnumeration results = ldapContext.search(authLdapSearchBase, searchFilter, searchControls);
-        
+
         if (!results.hasMore()) {
             return null;
         }
         SearchResult sr = (SearchResult) results.next();
-        System.out.print("ADPassword->ADConnection->fetchUser->getNameInNamespace: "+ sr.getNameInNamespace());
-        return sr.getNameInNamespace(); 
+        System.out.println("ADPassword->ADConnection->fetchUser->getNameInNamespace: "+ sr.getNameInNamespace());
+        return sr.getNameInNamespace();
     }
 }

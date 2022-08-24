@@ -29,7 +29,7 @@ If you use the same SSL certificate on your AD as on Zimbra there is a good chan
 To extract the SSL cert of the AD use:
 
 ```
-echo -n | openssl s_client -connect DC_HOSTNAME:3269 -servername DC_HOSTNAME | openssl x509 > your-exported-cert.cer
+echo -n | openssl s_client -connect DC_HOSTNAME:636 -servername DC_HOSTNAME | openssl x509 > your-exported-cert.cer
 ```
 
 Please note that on recent Zimbra versions and especially with AD/Samba4, you must use a DNS domain name to connect to the AD server, using IP addresses no longer works and is not secure SSL/TLS.
@@ -39,7 +39,7 @@ Please note that on recent Zimbra versions and especially with AD/Samba4, you mu
 Review your LDAP configuration in the commands below and then copy-paste them:
 
       mkdir -p /opt/zimbra/lib/ext/adpassword
-      wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.7/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar       
+      wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.7/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar
       su zimbra
       zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
       zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
@@ -57,7 +57,7 @@ Review your LDAP configuration in the commands below and then copy-paste them:
       zmprov md domain.ext zimbraAuthFallbackToLocal FALSE
       zmcontrol restart
 
-* If you want a custom password complexity rules, see: https://github.com/Zimbra-Community/ADPassword/wiki/Adding-a-password-policy-check
+* If you want a custom password complexity rules, see: [Adding a password policy check.md](wiki/Adding%20a%20password%20policy%20check.md)
 * Sometimes when the user clicks the change password option, Zimbra goes to a URL on port 8443. To fix: `zmprov mcf zimbraChangePasswordURL https://your-zimbra-server.com/h/changepass?skin=harmony`
 
 ## Zimbra only accounts with local password
@@ -68,15 +68,18 @@ only after successfully testing a password update against AD.
 
 ## Support for Zentyal
 
-ADPassword also supports Zentyal as directory server, please check [the wiki](https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal) for 
+ADPassword also supports Zentyal as directory server, please check [the wiki](wiki/Support%20for%20Zentyal.md) for
 configuration details.
 
 ## Debugging
+
 Do a password change while you run the following command:
 
      tail -f /opt/zimbra/log/zmmailboxd.out
 
 You should find *ADPassword* messages passing by explaining what's going on.
+
+LDAP related messages (forbidden, authentication...) will appear in `mailbox.log`.
 
 Verify your configuration:
 
@@ -86,12 +89,12 @@ Example issues:
 
      Wrong bind DN:
      LDAP: error code 34 - 0000208F: NameErr: DSID-03100225, problem 2006 (BAD_NAME)
-     
+
      Forgot to set zimbraAuthLdapSearchFilter or other required attribute:
      A network service error has occurred
      system failure: java.lang.NullPointerException
 
-## License* 
+## License
 * Copyright (C) 2016-2021  Barry de Graaff [Zeta Alliance](https://zetalliance.org/)
 * packaging, fixes and adjustments for ZCS 8.5/8.6 Copyright 2016 VNC AG
 * originally Copyright 2012 Antonio Messina (a.messina@iknowconsulting.it)
