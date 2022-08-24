@@ -57,7 +57,7 @@ Review your LDAP configuration in the commands below and then copy-paste them:
       zmprov md domain.ext zimbraAuthFallbackToLocal FALSE
       zmcontrol restart
 
-* If you want a custom password complexity rules, see: https://github.com/Zimbra-Community/ADPassword/wiki/Adding-a-password-policy-check
+* If you want a custom password complexity rules, see: [Adding a password policy check.md](wiki/Adding%20a%20password%20policy%20check.md)
 * Sometimes when the user clicks the change password option, Zimbra goes to a URL on port 8443. To fix: `zmprov mcf zimbraChangePasswordURL https://your-zimbra-server.com/h/changepass?skin=harmony`
 
 ## Zimbra only accounts with local password
@@ -68,7 +68,7 @@ only after successfully testing a password update against AD.
 
 ## Support for Zentyal
 
-ADPassword also supports Zentyal as directory server, please check [the wiki](https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal) for
+ADPassword also supports Zentyal as directory server, please check [the wiki](wiki/Support%20for%20Zentyal.md) for
 configuration details.
 
 ## Debugging
