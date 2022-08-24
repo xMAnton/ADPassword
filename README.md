@@ -95,7 +95,7 @@ Example issues:
      system failure: java.lang.NullPointerException
 
 ## License
-* Copyright (C) 2016-2021  Barry de Graaff [Zeta Alliance](https://zetalliance.org/)
+* Copyright (C) 2016-2022  Barry de Graaff [Zeta Alliance](https://zetalliance.org/)
 * packaging, fixes and adjustments for ZCS 8.5/8.6 Copyright 2016 VNC AG
 * originally Copyright 2012 Antonio Messina (a.messina@iknowconsulting.it)
 
