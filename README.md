@@ -39,7 +39,7 @@ Please note that on recent Zimbra versions and especially with AD/Samba4, you mu
 Review your LDAP configuration in the commands below and then copy-paste them:
 
       mkdir -p /opt/zimbra/lib/ext/adpassword
-      wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.7/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar       
+      wget https://github.com/Zimbra-Community/ADPassword/releases/download/0.0.7/ADPassword.jar -O /opt/zimbra/lib/ext/adpassword/adPassword.jar
       su zimbra
       zmprov md domain.ext zimbraAuthLdapBindDn "%u@domain.ext"
       zmprov md domain.ext zimbraAuthLdapSearchBase "CN=Users,DC=DOMAIN,DC=EXT"
@@ -68,15 +68,18 @@ only after successfully testing a password update against AD.
 
 ## Support for Zentyal
 
-ADPassword also supports Zentyal as directory server, please check [the wiki](https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal) for 
+ADPassword also supports Zentyal as directory server, please check [the wiki](https://github.com/Zimbra-Community/ADPassword/wiki/Support-for-Zentyal) for
 configuration details.
 
 ## Debugging
+
 Do a password change while you run the following command:
 
      tail -f /opt/zimbra/log/zmmailboxd.out
 
 You should find *ADPassword* messages passing by explaining what's going on.
+
+LDAP related messages (forbidden, authentication...) will appear in `mailbox.log`.
 
 Verify your configuration:
 
@@ -86,12 +89,12 @@ Example issues:
 
      Wrong bind DN:
      LDAP: error code 34 - 0000208F: NameErr: DSID-03100225, problem 2006 (BAD_NAME)
-     
+
      Forgot to set zimbraAuthLdapSearchFilter or other required attribute:
      A network service error has occurred
      system failure: java.lang.NullPointerException
 
-## License* 
+## License
 * Copyright (C) 2016-2021  Barry de Graaff [Zeta Alliance](https://zetalliance.org/)
 * packaging, fixes and adjustments for ZCS 8.5/8.6 Copyright 2016 VNC AG
 * originally Copyright 2012 Antonio Messina (a.messina@iknowconsulting.it)
