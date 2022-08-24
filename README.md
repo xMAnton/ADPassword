@@ -29,7 +29,7 @@ If you use the same SSL certificate on your AD as on Zimbra there is a good chan
 To extract the SSL cert of the AD use:
 
 ```
-echo -n | openssl s_client -connect DC_HOSTNAME:3269 -servername DC_HOSTNAME | openssl x509 > your-exported-cert.cer
+echo -n | openssl s_client -connect DC_HOSTNAME:636 -servername DC_HOSTNAME | openssl x509 > your-exported-cert.cer
 ```
 
 Please note that on recent Zimbra versions and especially with AD/Samba4, you must use a DNS domain name to connect to the AD server, using IP addresses no longer works and is not secure SSL/TLS.
