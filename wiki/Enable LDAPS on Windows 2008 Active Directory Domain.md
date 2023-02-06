@@ -1,5 +1,7 @@
 # Enable LDAPS on Windows 2008 Active Directory Domain
 
+_Are more up-to-date guide for newer Windows versions can be found at https://www.miniorange.com/guide-to-setup-ldaps-on-windows-server, while the Mini Orange guide also does some Kerberos set-up, it does show screenshots of most what is described below._
+
 ### Introduction
 
 Zimbra can set user password stored in an Active Directory using an ldaps connection and a distinguished name with administrative privileges.
